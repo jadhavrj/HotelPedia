@@ -1,0 +1,98 @@
+var express     = require("express"),
+    router      = express.Router(),
+    Hotel       = require("../models/hotel"),
+    middleware  = require("../middleware");
+
+//Hotel Routes
+//Index
+router.get("/", function (req, res) {
+    Hotel.find({}, function(err, allHotels) {
+        if(err){
+            req.flash("error", "We are facing some technical issues");
+            console.log(err);
+        } else {
+            res.render("hotels/index", {hotels: allHotels});
+        }
+    });
+});
+
+//New
+router.get("/new", middleware.isLoggedIn, function (req, res) {
+    res.render("hotels/new");
+});
+
+//Create
+router.post("/", middleware.isLoggedIn, function(req, res) {
+    Hotel.create(req.body.hotel, function(err, addedHotel) {
+        if(err){
+            req.flash("error", "We are facing some technical issues");
+            console.log(err);
+            res.redirect("/hotels");
+        } else {
+            addedHotel.author.id = req.user._id;
+            addedHotel.author.username = req.user.username;
+            addedHotel.save();
+            console.log("New Hotel added to database");
+            console.log(addedHotel);
+            req.flash("success", "Hotel added");
+            res.redirect("/hotels");     
+        }
+    });
+});
+
+//Show
+router.get("/:id", function(req, res) {
+    Hotel.findById(req.params.id).populate("comments").exec(function(err, foundHotel) {
+        if(err || !foundHotel) {
+            req.flash("error", "Hotel not found");
+            console.log(err);
+            res.redirect("/hotels");
+        } else {
+             res.render("hotels/show", {hotel: foundHotel});
+        }
+    });
+});
+
+//Edit
+router.get("/:id/edit", middleware.checkHotelOwnership, function(req, res) {
+    Hotel.findById(req.params.id, function (err, foundHotel) {
+        if(err || !foundHotel) {
+            req.flash("error", "Hotel not found");
+            console.log(err);
+            res.redirect("/hotels/"+req.params.id);
+        }
+        else {
+            res.render("hotels/edit", {hotel: foundHotel});
+        }
+    })
+});
+
+//Update
+router.put("/:id", middleware.checkHotelOwnership, function(req, res){
+    Hotel.findByIdAndUpdate(req.params.id, req.body.hotel, function(err, updatedHotel){
+        if(err || !updatedHotel) {
+            req.flash("error", "We are facing some technical issues");
+            console.log(err);
+            res.redirect("/hotels/"+req.params.id);
+        } else {
+            req.flash("success", "Hotel updated");
+            res.redirect("/hotels/"+req.params.id);
+        }
+    })
+});
+
+//Destroy
+router.delete("/:id", middleware.checkHotelOwnership, function(req, res) {
+    Hotel.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            req.flash("error", "We are facing some technical issues");
+            console.log(err);
+            res.redirect("/hotels/"+req.params.id);
+        } else{
+            req.flash("success", "Hotel deleted");
+            res.redirect("/hotels");
+        }
+    });
+});
+
+module.exports = router;
