@@ -33,6 +33,9 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     }
     var price = req.body.price;
     geocoder.geocode(req.body.location, function (err, data) {
+        if(err){
+            console.log(err);
+        }
         var lat = data.results[0].geometry.location.lat;
         var lng = data.results[0].geometry.location.lng;
         var location = data.results[0].formatted_address;
@@ -83,6 +86,9 @@ router.get("/:id/edit", middleware.checkHotelOwnership, function(req, res) {
 //Update
 router.put("/:id", middleware.checkHotelOwnership, function(req, res){
     geocoder.geocode(req.body.location, function (err, data) {
+        if(err){
+            console.log(err);
+        }
         var lat = data.results[0].geometry.location.lat;
         var lng = data.results[0].geometry.location.lng;
         var location = data.results[0].formatted_address;
@@ -97,7 +103,7 @@ router.put("/:id", middleware.checkHotelOwnership, function(req, res){
                 res.redirect("/hotels/"+req.params.id);
             }
         });
-    });     
+    });         
 });
 
 //Destroy
