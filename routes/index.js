@@ -10,7 +10,7 @@ router.get("/", function (req, res) {
 //Auth Routes
 //register
 router.get("/register", function(req, res) {
-    res.render("register");
+    res.render("register", {page: 'register'});
 });
 
 router.post("/register", function(req, res) {
@@ -20,10 +20,9 @@ router.post("/register", function(req, res) {
             req.flash("error", err.message);
             console.log(err);
             res.redirect("/register");
-        }
-        else {
+        } else {
             passport.authenticate("local")(req, res, function(){
-                req.flash("success", "Account created");
+                req.flash("success", "Successfully Signed Up! Nice to meet you " + req.body.username);
                 res.redirect("/hotels");    
             });
         }
@@ -32,7 +31,7 @@ router.post("/register", function(req, res) {
 
 //login 
 router.get("/login", function(req, res) {
-    res.render("login");
+    res.render("login", {page: 'login'});
 });
 
 router.post("/login", passport.authenticate("local",

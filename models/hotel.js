@@ -4,8 +4,11 @@ var mongoose = require("mongoose");
 var hotelsSchema = new mongoose.Schema({
     name: String,
     image: String,
-    price: String,
+    price: Number,
     description: String,
+    location: String,
+    lat: Number,
+    lng: Number,
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
