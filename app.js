@@ -15,7 +15,8 @@ var indexRoutes     = require("./routes/index"),
     hotelRoutes     = require("./routes/hotels"),
     commentRoutes   = require("./routes/comments");
     
-mongoose.connect("mongodb://localhost/hotel_pedia_v13", {useMongoClient: true});
+// mongoose.connect("mongodb://localhost/hotel_pedia_v13", {useMongoClient: true});
+mongoose.connect("mongodb://ruturaj:ruturaj@ds235775.mlab.com:35775/hotelpedia", {useMongoClient: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
