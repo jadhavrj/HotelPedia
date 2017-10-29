@@ -9,7 +9,7 @@ var express     = require("express"),
 router.get("/", function (req, res) {
     Hotel.find({}, function(err, allHotels) {
         if(err){
-            req.flash("error", "We are facing some technical issues");
+            req.flash("error", "Sorry. Something went wrong");
             console.log(err);
         } else {
             res.render("hotels/index", {hotels: allHotels, page: 'hotels'});
@@ -43,7 +43,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
         
         Hotel.create(newHotel, function(err, addedHotel) {
             if(err){
-                req.flash("error", "We are facing some technical issues");
+                req.flash("error", "Sorry. Something went wrong");
                 console.log(err);
                 res.redirect("/hotels");
             } else {
@@ -95,7 +95,7 @@ router.put("/:id", middleware.checkHotelOwnership, function(req, res){
         var newData = {name: req.body.name, image: req.body.image, description: req.body.description, price: req.body.price, location: location, lat: lat, lng: lng};
         Hotel.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, updatedHotel){
             if(err || !updatedHotel) {
-                req.flash("error", "We are facing some technical issues");
+                req.flash("error", "Sorry. Something went wrong");
                 console.log(err);
                 res.redirect("/hotels/"+req.params.id);
             } else {
@@ -110,7 +110,7 @@ router.put("/:id", middleware.checkHotelOwnership, function(req, res){
 router.delete("/:id", middleware.checkHotelOwnership, function(req, res) {
     Hotel.findByIdAndRemove(req.params.id, function(err){
         if(err){
-            req.flash("error", "We are facing some technical issues");
+            req.flash("error", "Sorry. Something went wrong");
             console.log(err);
             res.redirect("/hotels/"+req.params.id);
         } else{

@@ -71,7 +71,7 @@ router.get("/users/:id", function(req, res) {
         } else {
             Hotel.find().where("author.id").equals(user._id).exec(function (err, hotels) {
                 if(err){
-                    req.flash("error", "Something went wrong");
+                    req.flash("error", "Sorry. Something went wrong");
                     console.log(err);
                     res.redirect("back");
                 } else{
@@ -110,7 +110,7 @@ router.post("/users/:id", middleware.checkUserOwnership, function(req, res) {
     }
     User.findByIdAndUpdate(req.params.id, data, function(err, updatedUser){
         if(err) {
-            req.flash("error", "Something went wong");
+            req.flash("error", "Sorry. Something went wrong");
             console.log(err);
             res.redirect("back");
         } else {

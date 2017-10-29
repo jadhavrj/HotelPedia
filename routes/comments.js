@@ -9,7 +9,7 @@ var express     = require("express"),
 router.get("/new", middleware.isLoggedIn, function(req, res) {
     Hotel.findById(req.params.id, function (err, hotel) {
         if(err) {
-            req.flash("error", "We are facing some technical issues");
+            req.flash("error", "Sorry. Something went wrong");
             console.log(err);
         } else {
             res.render("comments/new", {hotel: hotel});
@@ -21,13 +21,13 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 router.post("/", middleware.isLoggedIn, function (req, res) {
     Hotel.findById(req.params.id, function(err, hotel) {
             if(err) {
-                req.flash("error", "We are facing some technical issues");
+                req.flash("error", "Sorry. Something went wrong");
                 console.log(err);
                 res.redirect("/hotels");
             } else {
                  Comment.create(req.body.comment, function (err, comment) {
                     if(err) {
-                        req.flash("error", "We are facing some technical issues");
+                        req.flash("error", "Sorry. Something went wrong");
                         console.log(err);
                     } else {
                         comment.author.id = req.user._id;
@@ -61,7 +61,7 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, 
 router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
         if(err || !updatedComment){
-            req.flash("error", "We are facing some technical issues");
+            req.flash("error", "Sorry. Something went wrong");
             console.log(err);
             res.redirect("back");
         } else{
@@ -74,7 +74,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
 router.delete("/:comment_id", middleware.checkCommentOwnership, function (req, res) {
     Comment.findByIdAndRemove(req.params.comment_id, function (err) {
         if(err) {
-            req.flash("error", "We are facing some technical issues");
+            req.flash("error", "Sorry. Something went wrong");
             console.log(err);
             res.redirect("back");
         } else {
