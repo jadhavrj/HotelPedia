@@ -4,16 +4,16 @@
     <div style="width: 30%; margin: 25px auto;">
         <form action="/users/<%= user._id %>" method="POST">
             <div class="form-group">
-                <input class="form-control" type="text" name="firstName" value="<%= user.firstName %>">
+                <input class="form-control" type="text" name="firstName" value="<%= user.firstName %>" placeholder="firstName">
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="lastName" value="<%= user.lastName %>">
+                <input class="form-control" type="text" name="lastName" value="<%= user.lastName %>" placeholder="lastName">
             </div>
             <div class="form-group">
-                <input class="form-control" type="email" name="email" value="<%= user.email %>">
+                <input class="form-control" type="email" name="email" value="<%= user.email %>" placeholder="email">
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="avatar" value="<%= user.avatar %>">
+                <input class="form-control" type="text" name="avatar" value="<%= user.avatar %>" placeholder="avatar image url">
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="adminCode" placeholder="Admin Code (optional)">
