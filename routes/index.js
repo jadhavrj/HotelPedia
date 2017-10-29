@@ -15,6 +15,9 @@ router.get("/register", function(req, res) {
 
 router.post("/register", function(req, res) {
     var newUser = new User({username: req.body.username});
+    if(req.body.adminCode === "secretcode") {
+        newUser.isAdmin = true;
+    }
     User.register(newUser, req.body.password, function(err, User){
         if(err) {
             req.flash("error", err.message);
@@ -44,7 +47,7 @@ router.post("/login", passport.authenticate("local",
 //logout
 router.get("/logout", function(req, res) {
     req.logout();
-    req.flash("success", "You are now logged out");
+    req.flash("success", "See you later!");
     res.redirect("/hotels");
 });
 

@@ -10,7 +10,7 @@ middlewareObj.checkHotelOwnership = function(req, res, next) {
                 req.flash("error", "Hotel not found");
                 res.redirect("back");
             } else{
-                if(foundHotel.author.id.equals(req.user.id)){
+                if(foundHotel.author.id.equals(req.user.id) || req.user.isAdmin){
                     next();
                 } else{
                     req.flash("error", "You don't have permission to do that");
@@ -31,7 +31,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                 req.flash("error", "Comment not found");
                 res.redirect("back");
             } else{
-                if(foundComment.author.id.equals(req.user.id)){
+                if(foundComment.author.id.equals(req.user.id) || req.user.isAdmin){
                     next();
                 } else{
                     req.flash("error", "You don't have permission to do that");
