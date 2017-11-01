@@ -3,18 +3,41 @@ var express     = require("express"),
     Hotel       = require("../models/hotel"),
     middleware  = require("../middleware"),
     geocoder        = require('geocoder');
+    
+// Define escapeRegex function for search feature
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};  
 
 //Hotel Routes
 //Index
 router.get("/", function (req, res) {
-    Hotel.find({}, function(err, allHotels) {
+    //search hotels
+    var noMatch = null;
+    if(req.query.search) {
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Hotel.find({name: regex}, function(err, allHotels) {
         if(err){
             req.flash("error", "Sorry. Something went wrong");
             console.log(err);
         } else {
-            res.render("hotels/index", {hotels: allHotels, page: 'hotels'});
+            if(allHotels.length < 1) {
+                noMatch = "No Hotels found. Try something else."
+            }
+            res.render("hotels/index", {hotels: allHotels, page: 'hotels', noMatch: noMatch});
         }
     });
+    } else {
+         //find all hotels
+        Hotel.find({}, function(err, allHotels) {
+            if(err){
+                req.flash("error", "Sorry. Something went wrong");
+                console.log(err);
+            } else {
+                res.render("hotels/index", {hotels: allHotels, page: 'hotels', noMatch: noMatch});
+            }
+        });
+    }
 });
 
 //New
