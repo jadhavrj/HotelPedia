@@ -8,6 +8,7 @@
         </div>
         <% if(currentUser && user._id.equals(currentUser._id)) { %>
             <a class="btn btn-sm btn-warning" href="/users/<%= user._id %>/edit">Edit</a>
+            <a class="btn btn-sm btn-primary pull-right" href="/forgot">Reset Password</a>
         <% } %>
     </div>
     <div class="col-md-8">
